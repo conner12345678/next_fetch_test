@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 export default function Home() {
   const [pokemons, setPokemons] = useState([])
   const [pokedata, setPokedata] = useState([])
+  const [types, setType] = useState([])
 
   useEffect(() => {
     async function fetchData() {
@@ -14,6 +15,7 @@ export default function Home() {
       const data2 = await res2.json()
       setPokemons(data.results)
       setPokedata(data2.sprites)
+      setType(data2.types)
     }
     fetchData()
   }, [])
@@ -22,6 +24,7 @@ export default function Home() {
     const res = await fetch(pokemons[index].url)
     const data = await res.json()
     setPokedata(data.sprites)
+    setType(data.types)
   }
 
   return(
@@ -30,6 +33,11 @@ export default function Home() {
       {/* Image Section */}
       <div className="w-1/3 flex justify-center items-center">
         <img src={pokedata.front_default} alt="pokemon" className="w-48 h-48 object-contain"/>
+        <div className="w-1/2 flex justify-center items-center">
+          {types.map((type,  i) => (
+            <p key={type.type.name} className="text-black">{type.type.name}</p>
+          ))}
+        </div>
       </div>
 
       {/* Scrollable Pokémon List */}
